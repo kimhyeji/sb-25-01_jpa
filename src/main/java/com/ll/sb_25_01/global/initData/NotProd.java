@@ -1,5 +1,6 @@
 package com.ll.sb_25_01.global.initData;
 
+import com.ll.sb_25_01.domain.article.article.service.ArticleService;
 import com.ll.sb_25_01.domain.member.member.entity.Member;
 import com.ll.sb_25_01.domain.member.member.service.MemberService;
 import com.ll.sb_25_01.global.rsData.RsData;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class NotProd {
     @Bean
-    public ApplicationRunner initNotProdData(MemberService memberService) {
+    public ApplicationRunner initNotProdData(MemberService memberService, ArticleService articleService) {
         return args -> {
             RsData<Member> joinRs = memberService.join("user1", "1234");
 
