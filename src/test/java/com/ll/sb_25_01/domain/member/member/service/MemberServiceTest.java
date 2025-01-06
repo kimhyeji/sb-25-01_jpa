@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-@Rollback(false)
 public class MemberServiceTest {
     @Autowired
     private MemberService memberService;

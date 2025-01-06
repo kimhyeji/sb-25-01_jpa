@@ -21,7 +21,6 @@ public class ArticleServiceTest {
 
     @DisplayName("글 쓰기")
     @Test
-    @Rollback(false)
     void t1() {
         RsData<Article> writeRs = articleService.write(1, "제목", "내용");
         Article article = writeRs.getData();
