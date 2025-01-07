@@ -40,6 +40,6 @@ public class ArticleService {
         article.setTitle(title);
         article.setBody(body);
 
-        articleRepository.save(article);
+        article.setModifyDate(LocalDateTime.now());
     }
 }
