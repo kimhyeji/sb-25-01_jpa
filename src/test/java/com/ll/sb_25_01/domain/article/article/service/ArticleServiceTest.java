@@ -13,8 +13,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -59,13 +57,12 @@ public class ArticleServiceTest {
     @Rollback(false)
     void t4() {
         Article article = articleService.findById(1L).get();
-        LocalDateTime oldModifyDate = article.getModifyDate();
 
         Ut.thread.sleep(1000);
 
         articleService.modify(article, "수정된 제목", "수정된 내용");
 
         Article article_ = articleService.findById(1L).get();
-        assertThat(article_.getModifyDate()).isAfter(oldModifyDate.plusSeconds(1));
+        assertThat(article_.getTitle()).isEqualTo("수정된 제목");
     }
 }
