@@ -20,9 +20,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @ToString(callSuper = true)
 public class Article extends BaseEntity {
-    private LocalDateTime createDate;
-    private LocalDateTime modifyDate;
-
     @ManyToOne(fetch = LAZY)
     private Member author;
     private String title;
