@@ -1,6 +1,7 @@
 package com.ll.sb_25_01.global.initData;
 
 import com.ll.sb_25_01.domain.article.article.entity.Article;
+import com.ll.sb_25_01.domain.article.article.repository.ArticleRepository;
 import com.ll.sb_25_01.domain.article.article.service.ArticleService;
 import com.ll.sb_25_01.domain.member.member.entity.Member;
 import com.ll.sb_25_01.domain.member.member.service.MemberService;
@@ -13,7 +14,11 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class NotProd {
     @Bean
-    public ApplicationRunner initNotProdData(MemberService memberService, ArticleService articleService) {
+    public ApplicationRunner initNotProdData(
+            MemberService memberService,
+            ArticleService articleService,
+            ArticleRepository articleRepository
+    ) {
         return args -> {
             Member member1 = memberService.join("user1", "1234").getData();
             Member member2 = memberService.join("user2", "1234").getData();
@@ -26,6 +31,8 @@ public class NotProd {
 
             article1.addComment(member2, "댓글1");
             article1.addComment(member2, "댓글2");
+
+            articleRepository.save(article1);
         };
     }
 }
