@@ -67,10 +67,19 @@ public class ArticleServiceTest {
         assertThat(article_.getTitle()).isEqualTo("수정된 제목");
     }
 
-    @DisplayName("1번 글의 댓글들을 수정")
+    @DisplayName("1번 글의 댓글들을 추가")
     @Test
     @Rollback(false)
     void t5() {
+        Article article1 = articleService.findById(1L).get();
+        Member member2 = memberService.findById(2L).get();
+
+        article1.addComment(member2, "댓글 입니다.");
+    }
+
+    @DisplayName("1번 글의 댓글들을 수정")
+    @Test
+    void t6() {
         Article article = articleService.findById(1L).get();
 
         article.getComments().forEach(comment ->  {
@@ -80,8 +89,7 @@ public class ArticleServiceTest {
 
     @DisplayName("1번 글의 댓글 중 마지막 것을 삭제")
     @Test
-    @Rollback(false)
-    void t6() {
+    void t7() {
         Article article = articleService.findById(1L).get();
 
         ArticleComment lastComment = article.getComments().getLast();
