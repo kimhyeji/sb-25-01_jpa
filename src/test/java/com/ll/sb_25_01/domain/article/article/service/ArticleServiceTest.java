@@ -2,6 +2,7 @@ package com.ll.sb_25_01.domain.article.article.service;
 
 import com.ll.sb_25_01.domain.article.article.entity.Article;
 import com.ll.sb_25_01.domain.article.articleComment.entity.ArticleComment;
+import com.ll.sb_25_01.domain.article.articleComment.service.ArticleCommentService;
 import com.ll.sb_25_01.domain.member.member.entity.Member;
 import com.ll.sb_25_01.domain.member.member.service.MemberService;
 import com.ll.sb_25_01.global.rsData.RsData;
@@ -24,6 +25,8 @@ public class ArticleServiceTest {
     private ArticleService articleService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private ArticleCommentService articleCommentService;
 
 
     @DisplayName("글 쓰기")
@@ -69,31 +72,25 @@ public class ArticleServiceTest {
 
     @DisplayName("1번 글의 댓글들을 추가")
     @Test
-    @Rollback(false)
     void t5() {
         Article article1 = articleService.findById(1L).get();
         Member member2 = memberService.findById(2L).get();
 
-        article1.addComment(member2, "댓글 입니다.");
+        articleCommentService.write(member2, article1, "댓글 입니다.");
     }
 
-    @DisplayName("1번 글의 댓글들을 수정")
+    @DisplayName("1번 글의 댓글을 수정")
     @Test
     void t6() {
-        Article article = articleService.findById(1L).get();
-
-        article.getComments().forEach(comment ->  {
-            articleService.modifyComment(comment, comment.getBody() + "!!");
-        });
+        ArticleComment comment = articleCommentService.findLatest().get();
+        articleCommentService.modify(comment, "댓글 수정");
     }
 
     @DisplayName("1번 글의 댓글 중 마지막 것을 삭제")
     @Test
     void t7() {
-        Article article = articleService.findById(1L).get();
+        ArticleComment lastComment = articleCommentService.findFirstByArticleIdOrderByIdDesc(1L).get();
 
-        ArticleComment lastComment = article.getComments().getLast();
-
-        article.removeComment(lastComment);
+        articleCommentService.delete(lastComment);
     }
 }
