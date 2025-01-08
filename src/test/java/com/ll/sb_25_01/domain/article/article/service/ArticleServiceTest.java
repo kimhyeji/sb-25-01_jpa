@@ -65,4 +65,15 @@ public class ArticleServiceTest {
         Article article_ = articleService.findById(1L).get();
         assertThat(article_.getTitle()).isEqualTo("수정된 제목");
     }
+
+    @DisplayName("1번 글의 댓글들을 수정")
+    @Test
+    @Rollback(false)
+    void t5() {
+        Article article = articleService.findById(1L).get();
+
+        article.getComments().forEach(comment ->  {
+            articleService.modifyComment(comment, comment.getBody() + "!!");
+        });
+    }
 }
