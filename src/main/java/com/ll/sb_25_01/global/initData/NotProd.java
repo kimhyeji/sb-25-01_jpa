@@ -27,12 +27,13 @@ public class NotProd {
     public ApplicationRunner initNotProdData() {
         return args -> {
             self.work1();
-            self.work2();
         };
     }
 
     @Transactional
     public void work1() {
+        if ( memberService.count() > 0 ) return;
+
         Member member1 = memberService.join("user1", "1234").getData();
         Member member2 = memberService.join("user2", "1234").getData();
 
@@ -40,23 +41,13 @@ public class NotProd {
         Article article2 = articleService.write(member1.getId(), "제목2", "내용2").getData();
         Article article3 = articleService.write(member2.getId(), "제목3", "내용3").getData();
         Article article4 = articleService.write(member2.getId(), "제목4", "내용4").getData();
-        article4.setBody("내용 수정");
-    }
-
-
-    @Transactional
-    public void work2() {
-        Member member1 = memberService.findById(1L).get();
-        Article article1 = articleService.findById(1L).get();
-        Article article2 = articleService.findById(2L).get();
 
         article1.addComment(member1, "댓글1");
         article1.addComment(member1, "댓글2");
-
         article2.addComment(member1, "댓글3");
         article2.addComment(member1, "댓글4");
         article2.addComment(member1, "댓글5");
-        
+
         article1.addTag("자바");
         article1.addTag("백엔드");
         article2.addTag("프레임워크", "스프링부트");
